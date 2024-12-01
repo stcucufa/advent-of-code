@@ -14,7 +14,10 @@ def parse(puzzle_input):
     return unzip([[int(n) for n in re.split(r"\s+", line)] for line in puzzle_input.split("\n")])
 
 def part1(data):
-    return sum(abs(x - y) for x, y in zip(*data))
+    xs, ys = data
+    xs.sort()
+    ys.sort()
+    return sum(abs(x - y) for x, y in zip(xs, ys))
 
 def part2(data):
     xs, ys = data

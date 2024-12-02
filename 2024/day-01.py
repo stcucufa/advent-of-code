@@ -1,5 +1,4 @@
 import pathlib
-import re
 import sys
 
 def unzip(pairs):
@@ -11,7 +10,7 @@ def unzip(pairs):
     return xs, ys
 
 def parse(puzzle_input):
-    return unzip([[int(n) for n in re.split(r"\s+", line)] for line in puzzle_input.split("\n")])
+    return unzip([[int(n) for n in line.split()] for line in puzzle_input.split("\n")])
 
 def part1(data):
     xs, ys = data

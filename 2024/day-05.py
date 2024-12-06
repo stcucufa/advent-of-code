@@ -3,38 +3,32 @@ import pathlib
 import sys
 
 def parse(puzzle_input):
-    rules, updates = puzzle_input.split("\n\n")
-    before = {}
-    after = {}
-    for line in rules.split("\n"):
+    pairs, updates = puzzle_input.split("\n\n")
+    rules = {}
+    for line in pairs.split("\n"):
         p, q = [int(n) for n in line.split("|")]
-        if not p in before:
-            before[p] = set()
-        before[p].add(q)
-        if not q in after:
-            after[q] = set()
-        after[q].add(p)
+        if not p in rules:
+            rules[p] = set()
+        rules[p].add(q)
     return [
-        before, after,
+        rules,
         [[int(n) for n in ns] for ns in [line.split(",") for line in updates.split("\n")]]
     ]
 
-def rules_sort(before, after, update):
+def rules_sort(rules, update):
     def rules_cmp(a, b):
-        if a in before and b in before[a]:
+        if a in rules and b in rules[a]:
             return -1
-        if b in after and a in after[b]:
-            return 1
         return 0
     return sorted(update, key=functools.cmp_to_key(rules_cmp))
 
 def part1(data):
-    before, after, updates = data
-    return sum(u[len(u) // 2] for u in updates if rules_sort(before, after, u) == u)
+    rules, updates = data
+    return sum(u[len(u) // 2] for u in updates if rules_sort(rules, u) == u)
 
 def part2(data):
-    before, after, updates = data
-    updates = [[rules_sort(before, after, u), u] for u in updates]
+    rules, updates = data
+    updates = [[rules_sort(rules, u), u] for u in updates]
     return sum(u[0][len(u[0]) // 2] for u in updates if u[0] != u[1])
 
 def solve(puzzle_input):

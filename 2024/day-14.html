@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>AOC 2024, Day 14</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    </head>
+    <body>
+        <p>Time: <span>0</span>s<p>
+        <canvas width="101" height="103"></canvas>
+        <script>
+
+const span = document.querySelector("span");
+const canvas = document.querySelector("canvas");
+const w = canvas.width;
+const h = canvas.height;
+const s = 7;
+canvas.style.width = `${w * s}px`;
+canvas.style.height = `${h * s}px`;
+canvas.style.imageRendering = "pixelated";
+const context = canvas.getContext("2d");
+
+let t = 0;
+
+function draw(grid) {
+    span.textContent = t;
+    canvas.width = w;
+    canvas.height = h;
+    const imageData = context.getImageData(0, 0, w, h);
+    const pixels = imageData.data;
+    for ([offset, vs] of Object.entries(grid)) {
+        offset *= 4;
+        pixels[offset + 1] = 127;
+        pixels[offset + 2] = 63;
+        pixels[offset + 3] = Math.min(128 * vs.length, 255);
+    }
+    context.putImageData(imageData, 0, 0);
+
+    window.requestAnimationFrame(() => {
+        if (t < 7371) {
+            ++t;
+            draw(update(grid));
+        }
+    });
+}
+
+function update(grid) {
+    const out = new Map();
+    for ([offset, vs] of Object.entries(grid)) {
+        const x = offset % w;
+        const y = Math.floor(offset / w);
+        for (const v of vs) {
+            const [vx, vy] = v;
+            const xx = (x + vx + w) % w;
+            const yy = (y + vy + h) % h;
+            const q = yy * w + xx;
+            if (out[q]) {
+                out[q].push(v);
+            } else {
+                out[q] = [v];
+            }
+        }
+    }
+    return out;
+}
+
+(async function(url) {
+    const response = await fetch(url);
+    const input = await response.text();
+
+    const grid = {};
+    for (const line of input.split("\n")) {
+        const [x, y, vx, vy] = line.match(/-?\d+/g).map(n => parseFloat(n));
+        const offset = y * w + x;
+        if (grid[offset]) {
+            grid[offset].push([vx, vy]);
+        } else {
+            grid[offset] = [[vx, vy]];
+        }
+    }
+    draw(grid);
+})("input-14.txt");
+
+        </script>
+    </body>
+</html>
+

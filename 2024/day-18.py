@@ -15,56 +15,42 @@ def draw(grid, w, h, path):
                 print("#" if (x, y) in grid else ".", end="")
         print()
 
-def part1(data):
-    w, h, n = (71, 71, 1024) if len(data) > 1024 else (7, 7, 12)
-    grid = set()
-    for p in data[:n]:
-        grid.add(p)
+def find_path(grid, w, h):
     queue = deque([(0, 0, set())])
     visited = set()
     while len(queue) > 0:
         x, y, path = queue.pop()
         if x < 0 or y < 0 or x >= w or y >= h or (x, y) in grid or (x, y) in visited:
             continue
-        path = path.copy()
-        path.add((x, y))
         visited.add((x, y))
         if x == w - 1 and y == h - 1:
-            draw(grid, w, h, path)
-            return len(path) - 1
+            return path
+        path = path.copy()
+        path.add((x, y))
         queue.appendleft((x + 1, y, path))
         queue.appendleft((x, y + 1, path))
         queue.appendleft((x - 1, y, path))
         queue.appendleft((x, y - 1, path))
+
+def part1(data):
+    w, h, n = (71, 71, 1024) if len(data) > 1024 else (7, 7, 12)
+    grid = set()
+    for p in data[:n]:
+        grid.add(p)
+    path = find_path(grid, w, h)
+    draw(grid, w, h, path)
+    return len(path) - 1
 
 def part2(data):
     w, h, n = (71, 71, 1024) if len(data) > 1024 else (7, 7, 12)
     grid = set()
     for p in data[:n]:
         grid.add(p)
-
-    def find_path():
-        queue = deque([(0, 0, set())])
-        visited = set()
-        while len(queue) > 0:
-            x, y, path = queue.pop()
-            if x < 0 or y < 0 or x >= w or y >= h or (x, y) in grid or (x, y) in visited:
-                continue
-            visited.add((x, y))
-            if x == w - 1 and y == h - 1:
-                return path
-            path = path.copy()
-            path.add((x, y))
-            queue.appendleft((x + 1, y, path))
-            queue.appendleft((x, y + 1, path))
-            queue.appendleft((x - 1, y, path))
-            queue.appendleft((x, y - 1, path))
-
-    path = find_path()
+    path = find_path(grid, w, h)
     for i in range(n, len(data)):
         grid.add(data[i])
         if data[i] in path:
-            path = find_path()
+            path = find_path(grid, w, h)
             if path == None:
                 return "{},{}".format(*data[i])
 

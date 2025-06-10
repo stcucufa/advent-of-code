@@ -22,11 +22,11 @@ func part2(_ digits: [Int]) {
     print(sum)
 }
 
-func main() {
-    let input = try? String(contentsOfFile: "input-01.txt", encoding: .ascii)
-    let digits = Array(input!).map { Int(String($0))! }
+func main() throws {
+    let input = try String(contentsOfFile: "input-01.txt", encoding: .ascii)
+    let digits = Array(input).map { Int(String($0))! }
     part1(digits)
     part2(digits)
 }
 
-main()
+try? main()

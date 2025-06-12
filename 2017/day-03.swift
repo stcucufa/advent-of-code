@@ -44,27 +44,19 @@ func part1(_ input: Int) {
 
 func part2(_ input: Int) {
     var spiral = [0, 1]
+
+    func neighbour(_ xy: (Int, Int)) -> Int {
+        let j = xy2index(xy)
+        return j < spiral.count ? spiral[j] : 0
+    }
+
     var i = 2
     while spiral[i - 1] < input {
         let (x, y) = index2xy(i)
-        var k = 0
-        var j = xy2index((x - 1, y - 1))
-        k += j < spiral.count ? spiral[j] : 0
-        j = xy2index((x, y - 1))
-        k += j < spiral.count ? spiral[j] : 0
-        j = xy2index((x + 1, y - 1))
-        k += j < spiral.count ? spiral[j] : 0
-        j = xy2index((x - 1, y))
-        k += j < spiral.count ? spiral[j] : 0
-        j = xy2index((x + 1, y))
-        k += j < spiral.count ? spiral[j] : 0
-        j = xy2index((x - 1, y + 1))
-        k += j < spiral.count ? spiral[j] : 0
-        j = xy2index((x, y + 1))
-        k += j < spiral.count ? spiral[j] : 0
-        j = xy2index((x + 1, y + 1))
-        k += j < spiral.count ? spiral[j] : 0
-        spiral.append(k)
+        spiral.append(
+            neighbour((x - 1,  y - 1)) + neighbour((x, y - 1)) + neighbour((x + 1, y - 1)) +
+            neighbour((x - 1, y)) + neighbour((x + 1, y)) +
+            neighbour((x - 1, y + 1)) + neighbour((x, y + 1)) + neighbour((x + 1, y + 1)))
         i += 1
     }
     print(spiral[i - 1])

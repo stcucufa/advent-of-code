@@ -2,26 +2,29 @@
 
 import Foundation
 
+let Directions = ["n": (0, 2), "ne": (1, 1), "se": (1, -1), "s": (0, -2), "sw": (-1, -1), "nw": (-1, 1)]
+
 func distance(_ p: (Int, Int)) -> Int {
     let (x, y) = p
-    return abs(x) + abs((abs(x) - abs(y)) / 2)
+    let xx = abs(x)
+    return xx + abs((xx - abs(y)) / 2)
 }
 
 func part1(_ steps: [String]) {
-    let directions = ["n": (0, 2), "ne": (1, 1), "se": (1, -1), "s": (0, -2), "sw": (-1, -1), "nw": (-1, 1)]
     print(distance((steps.reduce((0, 0), { z, step in
         let (x, y) = z
-        let (dx, dy) = directions[step]!
+        let (dx, dy) = Directions[step]!
         return (x + dx, y + dy)
     }))))
 }
 
 func part2(_ steps: [String]) {
-    let directions = ["n": (0, 2), "ne": (1, 1), "se": (1, -1), "s": (0, -2), "sw": (-1, -1), "nw": (-1, 1)]
     let (_, _, m) = (steps.reduce((0, 0, 0), { z, step in
         let (x, y, m) = z
-        let (dx, dy) = directions[step]!
-        return (x + dx, y + dy, max(m, distance((x, y))))
+        let (dx, dy) = Directions[step]!
+        let xx = x + dx
+        let yy = y + dy
+        return (xx, yy, max(m, distance((xx, yy))))
     }))
     print(m)
 }

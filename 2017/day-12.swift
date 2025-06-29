@@ -37,4 +37,5 @@ func main() throws {
     print(group.count)
     print(groups.count)
 }
+
 try? main()

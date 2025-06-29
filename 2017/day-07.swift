@@ -14,10 +14,10 @@ func part1(_ discs: Dictionary<String, (Int, [String])>) -> String {
 
 func part2(_ bottom: String, _ discs: Dictionary<String, (Int, [String])>) {
     var weights = Dictionary<String, Int>()
-    func weigh(_ disc: String) -> Int {
+    func weight(_ disc: String) -> Int {
         if !weights.keys.contains(disc) {
-            let (weight, above) = discs[disc]!
-            _ = weights.updateValue(above.reduce(weight, { z, d in z + weigh(d) }), forKey: disc)
+            let (w, above) = discs[disc]!
+            _ = weights.updateValue(above.reduce(w, { z, d in z + weight(d) }), forKey: disc)
         }
         return weights[disc]!
     }
@@ -25,7 +25,7 @@ func part2(_ bottom: String, _ discs: Dictionary<String, (Int, [String])>) {
     var Δ = 0
     while true {
         let (_, above) = discs[d]!
-        let ws = Dictionary(grouping: above, by: { weigh($0) })
+        let ws = Dictionary(grouping: above, by: weight)
         if ws.count < 2 {
             print(discs[d]!.0 + Δ)
             return

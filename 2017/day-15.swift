@@ -1,5 +1,4 @@
-// https://adventofcode.com/2017/day/8
-// Cf. day-05.swift
+// https://adventofcode.com/2017/day/15
 
 import Foundation
 

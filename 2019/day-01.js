@@ -1,6 +1,6 @@
-import { numbers, sum } from "./util.js";
+import { input, numbers, sum } from "./util.js";
 
-const masses = numbers(await Bun.file("input-01.txt").text());
+const masses = numbers(await input(1));
 
 // Part 1
 

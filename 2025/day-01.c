@@ -1,10 +1,11 @@
+// cc -Wall -std=c23 -o day-01 day-01.c && ./day-01
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/errno.h>
 
 #define INPUT_FILE "input-01.txt"
 
-void part1(FILE* input) {
+static void part1(FILE* input) {
     int dial = 50;
     int zeros = 0;
     char direction;
@@ -16,7 +17,7 @@ void part1(FILE* input) {
     printf("%d\n", zeros);
 }
 
-void part2(FILE* input) {
+static void part2(FILE* input) {
     int dial = 50;
     int zeros = 0;
     char direction;
@@ -31,19 +32,17 @@ void part2(FILE* input) {
     printf("%d\n", zeros);
 }
 
-int main(int argc, [[maybe_unused]] char* argv[argc + 1]) {
+int main(int argc, char* argv[argc + 1]) {
     char* path = argc > 1 ? argv[1] : INPUT_FILE;
     FILE* input = fopen(path, "r");
     if (!input) {
-        fprintf(stderr, "Could not open file %s for reading: error %d\n", path, errno);
+        fprintf(stderr, "Could not open file %s for reading. ", path);
+        perror(nullptr);
         return EXIT_FAILURE;
     }
-
     part1(input);
     rewind(input);
     part2(input);
-
     fclose(input);
     return EXIT_SUCCESS;
 }
-

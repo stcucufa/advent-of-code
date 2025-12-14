@@ -15,9 +15,8 @@ static char input[] = {
 static size_t joltage(size_t n) {
     char* in = strdup(input);
     char* tofree = in;
-    char* p;
     size_t z = 0;
-    while ((p = strsep(&in, "\n"))) {
+    for (char* p; (p = strsep(&in, "\n"));) {
         size_t l = strlen(p) - n;
         char* digits = calloc(n + 1, 1);
         size_t offset = 0;
